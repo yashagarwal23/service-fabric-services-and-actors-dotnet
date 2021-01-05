@@ -16,6 +16,8 @@ namespace Microsoft.ServiceFabric.Actors.Generator
     using Microsoft.ServiceFabric.Actors.Runtime;
     using Microsoft.ServiceFabric.Services.Remoting;
 
+    // using TestNamespace;
+
     /// <summary>
     /// ServiceManifestEntryPointType decides which kind of service manifest exe host is generated. By default the existing behavior of serviceName.exe will be used.
     /// </summary>
@@ -90,8 +92,10 @@ namespace Microsoft.ServiceFabric.Actors.Generator
 
         internal static void Generate(Arguments arguments)
         {
+            // Testclass.Reached();
             toolContext = new Context(arguments);
             toolContext.LoadExistingContents();
+
             var serviceManifest = CreateServiceManifest(arguments.ServiceManifestEntryPointType);
             var configSettings = CreateConfigSettings();
             var mergedServiceManifest = MergeServiceManifest(serviceManifest);
@@ -274,9 +278,10 @@ namespace Microsoft.ServiceFabric.Actors.Generator
 
             serviceManifest.Resources = new ResourcesType
             {
-                Endpoints = endpointResourceList.ToArray(),
+                // Endpoints = endpointResourceList.ToArray(),
             };
 
+            // Testclass.Reached();
             return serviceManifest;
         }
 

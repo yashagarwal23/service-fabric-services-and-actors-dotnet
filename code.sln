@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.ServiceFabric.Act
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FabActUtil", "src\FabActUtil\FabActUtil.csproj", "{F6E091C3-9136-4058-91CF-57CDF383DF74}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testclass", "src\Testclass\Testclass.csproj", "{F6E091C3-9136-4058-91CF-57CDF383DF75}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.ServiceFabric.Services_netstandard", "src\netstandard\Microsoft.ServiceFabric.Services\Microsoft.ServiceFabric.Services_netstandard.csproj", "{E93A1CC5-C164-4C4D-8314-A35B4B3AF633}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.ServiceFabric.Services.Remoting_netstandard", "src\netstandard\Microsoft.ServiceFabric.Services.Remoting\Microsoft.ServiceFabric.Services.Remoting_netstandard.csproj", "{C6FF32EC-DCB6-4684-ACB5-4D8A9B6BB590}"
@@ -22,6 +24,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.ServiceFabric.Actors_netstandard", "src\netstandard\Microsoft.ServiceFabric.Actors\Microsoft.ServiceFabric.Actors_netstandard.csproj", "{997C67FC-4571-4DAC-8C2F-9BB62756AFFA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FabActUtil_netstandard", "src\netstandard\FabActUtil\FabActUtil_netstandard.csproj", "{BD88FA2D-1F61-4107-8113-8D78FB5697F3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testclass_netstandard", "src\netstandard\Testclass\Testclass_netstandard.csproj", "{BD88FA2D-1F61-4107-8113-8D78FB5697F4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnetframework", "dotnetframework", "{861D6F40-D3CE-46CF-B8AD-0215B9F38BE1}"
 EndProject
@@ -90,6 +94,10 @@ Global
 		{BD88FA2D-1F61-4107-8113-8D78FB5697F3}.Debug|x64.Build.0 = Debug|x64
 		{BD88FA2D-1F61-4107-8113-8D78FB5697F3}.Release|x64.ActiveCfg = Release|x64
 		{BD88FA2D-1F61-4107-8113-8D78FB5697F3}.Release|x64.Build.0 = Release|x64
+		{BD88FA2D-1F61-4107-8113-8D78FB5697F4}.Debug|x64.ActiveCfg = Debug|x64
+		{BD88FA2D-1F61-4107-8113-8D78FB5697F4}.Debug|x64.Build.0 = Debug|x64
+		{BD88FA2D-1F61-4107-8113-8D78FB5697F4}.Release|x64.ActiveCfg = Release|x64
+		{BD88FA2D-1F61-4107-8113-8D78FB5697F4}.Release|x64.Build.0 = Release|x64
 		{63B58D31-66BB-4879-B4F1-0969FA3F4464}.Debug|x64.ActiveCfg = Debug|x64
 		{63B58D31-66BB-4879-B4F1-0969FA3F4464}.Debug|x64.Build.0 = Debug|x64
 		{63B58D31-66BB-4879-B4F1-0969FA3F4464}.Release|x64.ActiveCfg = Release|x64

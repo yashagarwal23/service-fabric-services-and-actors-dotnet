@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\..\properties\service_fabric_managed_netstandard.props" />
+  <Import Project="..\..\..\properties\service_fabric_managed_stylecop.props" />
+  <PropertyGroup>
+    <AssemblyName>Testclass</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <SourceCodeDir>$(RepoRoot)src\Testclass\</SourceCodeDir>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <!--Add required .cs files to build for dotnet core-->
+    <Compile Include="$(SourceCodeDir)*.cs" Exclude="$(SourceCodeDir)SR.Designer.cs" Link="$([System.String]::Copy('%(Identity)').Replace('$(SourceCodeDir)',''))" />
+  </ItemGroup>
+</Project>
