@@ -92,7 +92,7 @@ namespace Microsoft.ServiceFabric.Actors.Generator
 
         internal static void Generate(Arguments arguments)
         {
-            // Testclass.Reached();
+            Testclass.Reached();
             toolContext = new Context(arguments);
             toolContext.LoadExistingContents();
 
