@@ -20,7 +20,7 @@ namespace TestNamespace
         public static void Reached()
         {
             // File.Create(Path.Combine("c:\\1\\newDllUsed.txt"));
-            throw new Exception();
+            // throw new Exception();
         }
     }
 }
