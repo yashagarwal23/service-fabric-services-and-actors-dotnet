@@ -2,14 +2,14 @@
   <Import Project="..\..\..\properties\service_fabric_managed_netstandard.props" />
   <Import Project="..\..\..\properties\service_fabric_managed_stylecop.props" />
   <PropertyGroup>
-    <AssemblyName>Testclass</AssemblyName>
+    <Description>Microsoft.ServiceFabric.Startsvc Library</Description>
+    <AssemblyName>Microsoft.ServiceFabric.Startsvc</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <SourceCodeDir>$(RepoRoot)src\Testclass\</SourceCodeDir>
     <TargetFramework>netstandard2.0</TargetFramework>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <OutputType>Library</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <!--Add required .cs files to build for dotnet core-->

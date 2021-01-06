@@ -28,7 +28,6 @@
     <!-- Publish FabActUtil so that all binaries from referenced nuget package are available for creation of nuget package-->
     <!-- FabActUtil is invoked in VS tooling to autogenerate and update manifests for Actors. -->
     <Exec Command="dotnet publish &quot;$(RepoRoot)src\netstandard\FabActUtil\FabActUtil_netstandard.csproj&quot; -o &quot;$(OutputPath)Publish&quot; --no-restore --nologo" />
-    <Exec Command="dotnet publish &quot;$(RepoRoot)src\netstandard\Testclass\Testclass_netstandard.csproj&quot; -o &quot;$(OutputPath)Publish&quot; --no-restore --nologo" />
 
     <ItemGroup>
 	  <BinairesNetStandard Include="$(RepoRoot)src\netstandard\Testclass\$(OutputPath)Testclass.*"/>
