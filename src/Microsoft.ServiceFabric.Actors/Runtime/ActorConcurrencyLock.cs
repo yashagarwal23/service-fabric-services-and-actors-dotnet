@@ -9,6 +9,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
     using System.Globalization;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.ServiceFabric.Actors.Runtime.Throttling;
 
     /// <summary>
     /// Provides a turn based concurrency that supports logical call based reentrancy for actor calls.
@@ -43,6 +44,8 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
         // current logical call context value, that identifies the current logical call chain
         private string currentCallContext;
 
+        private IActorThrottler throttler;
+
         public ActorConcurrencyLock(ActorBase owner, ActorConcurrencySettings actorConcurrencySettings)
         {
             this.owner = owner;
@@ -54,6 +57,10 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
             this.currentCallCount = 0;
             this.turnLockTimeout = actorConcurrencySettings.LockTimeout;
             this.turnLockTimeoutRandomizer = GetRandomizer(this.turnLockTimeout, out this.turnLockWaitMaxRandomIntervalMillis);
+            if (actorConcurrencySettings.ThrottlingSettings != null)
+            {
+                this.throttler = actorConcurrencySettings.ThrottlingSettings.GetThrottler();
+            }
         }
 
         // if the state of the actor was dirty, it needs to be handled before a call is allowed to it
@@ -156,6 +163,15 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
             finally
             {
                 this.reentrantLock.Release();
+            }
+
+            if (this.throttler != null)
+            {
+                bool callAccepted = this.throttler.Throttle();
+                if (!callAccepted)
+                {
+                    throw new ActorThrottlingException();
+                }
             }
 
             // this is not a reentrant call, which means that the caller needs to wait
