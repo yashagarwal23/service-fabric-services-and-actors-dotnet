@@ -17,7 +17,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime.Throttling
         private readonly long limit;
         private readonly TimeSpan throttlingInterval;
         private DateTime windowStartTime;
-        private long allowance;
+        private long currentCallCount;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FixedWindowActorThrottler"/> class.
@@ -29,7 +29,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime.Throttling
             this.limit = limit;
             this.throttlingInterval = throttlingInterval;
             this.windowStartTime = DateTime.UtcNow;
-            this.allowance = this.limit;
+            this.currentCallCount = 0;
         }
 
         /// <summary>
@@ -40,20 +40,20 @@ namespace Microsoft.ServiceFabric.Actors.Runtime.Throttling
         {
             lock (this.lockObject)
             {
-                var currtime = DateTime.UtcNow;
-                var timeElapsed = currtime - this.windowStartTime;
+                var currentTime = DateTime.UtcNow;
+                var timeElapsed = currentTime - this.windowStartTime;
                 if (timeElapsed > this.throttlingInterval)
                 {
-                    this.allowance = this.limit;
-                    this.windowStartTime = currtime;
+                    this.currentCallCount = 0;
+                    this.windowStartTime = currentTime;
                 }
 
-                if (this.allowance < 1)
+                if (this.currentCallCount >= this.limit)
                 {
                     return false;
                 }
 
-                --this.allowance;
+                ++this.currentCallCount;
                 return true;
             }
         }
