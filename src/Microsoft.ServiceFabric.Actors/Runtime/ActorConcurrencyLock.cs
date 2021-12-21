@@ -170,7 +170,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
                 bool callAccepted = this.throttler.Throttle();
                 if (!callAccepted)
                 {
-                    throw new ActorThrottlingException();
+                    throw new ActorThrottlingException("Too many calls");
                 }
             }
 

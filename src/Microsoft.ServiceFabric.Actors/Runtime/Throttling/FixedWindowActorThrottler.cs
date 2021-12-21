@@ -6,9 +6,6 @@
 namespace Microsoft.ServiceFabric.Actors.Runtime.Throttling
 {
     using System;
-    using System.Collections.Concurrent;
-    using System.Globalization;
-    using System.Linq;
     using System.Threading;
 
     /// <summary>
@@ -19,7 +16,8 @@ namespace Microsoft.ServiceFabric.Actors.Runtime.Throttling
         private readonly object lockObject = new object();
         private readonly long limit;
         private readonly TimeSpan throttlingInterval;
-        private long callCount;
+        private DateTime windowStartTime;
+        private long allowance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FixedWindowActorThrottler"/> class.
@@ -30,16 +28,8 @@ namespace Microsoft.ServiceFabric.Actors.Runtime.Throttling
         {
             this.limit = limit;
             this.throttlingInterval = throttlingInterval;
-            this.callCount = 0;
-
-            Timer timer = new Timer(
-                _ =>
-                {
-                    this.callCount = 0;
-                },
-                null,
-                throttlingInterval,
-                throttlingInterval);
+            this.windowStartTime = DateTime.UtcNow;
+            this.allowance = this.limit;
         }
 
         /// <summary>
@@ -50,15 +40,21 @@ namespace Microsoft.ServiceFabric.Actors.Runtime.Throttling
         {
             lock (this.lockObject)
             {
-                if (this.callCount < this.limit)
+                var currtime = DateTime.UtcNow;
+                var timeElapsed = currtime - this.windowStartTime;
+                if (timeElapsed > this.throttlingInterval)
                 {
-                    this.callCount++;
-                    return true;
+                    this.allowance = this.limit;
+                    this.windowStartTime = currtime;
                 }
-                else
+
+                if (this.allowance < 1)
                 {
                     return false;
                 }
+
+                --this.allowance;
+                return true;
             }
         }
     }
