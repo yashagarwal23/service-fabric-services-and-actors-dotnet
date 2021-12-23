@@ -7,6 +7,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
 {
     using System;
     using System.Threading;
+    using Microsoft.ServiceFabric.Actors.Throttling;
 
     /// <summary>
     /// Provides the settings to configure the turn based concurrency lock for actors. See https://docs.microsoft.com/azure/service-fabric/service-fabric-reliable-actors-introduction for a description of concurrency in actors.
@@ -15,6 +16,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
     {
         private ActorReentrancyMode reentrancyMode;
         private TimeSpan lockTimeout;
+        private ActorThrottlingSettings throttlingSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ActorConcurrencySettings"/> class.
@@ -25,12 +27,14 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
         {
             this.reentrancyMode = ActorReentrancyMode.LogicalCallContext;
             this.lockTimeout = TimeSpan.FromSeconds(60);
+            this.throttlingSettings = null;
         }
 
         internal ActorConcurrencySettings(ActorConcurrencySettings other)
         {
             this.reentrancyMode = other.ReentrancyMode;
             this.lockTimeout = other.lockTimeout;
+            this.throttlingSettings = other.throttlingSettings;
         }
 
         /// <summary>
@@ -74,6 +78,15 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
 
                 this.lockTimeout = value;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the throtlling settings for actor.
+        /// </summary>
+        public ActorThrottlingSettings ThrottlingSettings
+        {
+            get { return this.throttlingSettings; }
+            set { this.throttlingSettings = value; }
         }
     }
 }
