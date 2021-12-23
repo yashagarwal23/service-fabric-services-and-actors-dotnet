@@ -13,6 +13,7 @@ namespace Microsoft.ServiceFabric.Actors.Tests.Runtime
     using FluentAssertions;
     using Microsoft.ServiceFabric.Actors;
     using Microsoft.ServiceFabric.Actors.Runtime;
+    using Microsoft.ServiceFabric.Actors.Throttling;
     using Moq;
     using Xunit;
 
@@ -124,6 +125,43 @@ namespace Microsoft.ServiceFabric.Actors.Tests.Runtime
             guard.Test_CurrentCount.Should().Be(0);
         }
 
+        /// <summary>
+        /// Test to verify fixed window actor throttler.
+        /// </summary>
+        [Fact]
+        public void VerifyFixedWindowActorThrottler()
+        {
+            var actor = new DummyActor();
+            var guard = this.CreateAndInitializeThrottlingGuard(
+                actor,
+                () => new FixedWindowActorThrottler(new FixedWindowActorThrottlingSettings(100, TimeSpan.FromSeconds(2))));
+
+            Action actorConcurrencyLockAquireAction = () =>
+            {
+                string context = Guid.NewGuid().ToString();
+                guard.Acquire(context, null, CancellationToken.None).Wait();
+                guard.ReleaseContext(context).Wait();
+            };
+
+            for (int i = 0; i < 100; i++)
+            {
+                actorConcurrencyLockAquireAction.Should().NotThrow();
+            }
+
+            actorConcurrencyLockAquireAction.Should().Throw<ActorThrottlingException>();
+            actorConcurrencyLockAquireAction.Should().Throw<ActorThrottlingException>();
+
+            Thread.Sleep(TimeSpan.FromSeconds(2));
+
+            for (int i = 0; i < 100; i++)
+            {
+                actorConcurrencyLockAquireAction.Should().NotThrow();
+            }
+
+            actorConcurrencyLockAquireAction.Should().Throw<ActorThrottlingException>();
+            actorConcurrencyLockAquireAction.Should().Throw<ActorThrottlingException>();
+        }
+
         private static Task<bool> ReplacementHandler(ActorBase actor)
         {
             actor.IsDirty.Should().BeTrue("Expect actor to be in dirty state when handler invoked");
@@ -153,6 +191,13 @@ namespace Microsoft.ServiceFabric.Actors.Tests.Runtime
         {
             var settings = new ActorConcurrencySettings() { ReentrancyMode = mode };
             var guard = new ActorConcurrencyLock(owner, settings);
+            return guard;
+        }
+
+        private ActorConcurrencyLock CreateAndInitializeThrottlingGuard(ActorBase owner, Func<IActorThrottler> throtllerFactory)
+        {
+            var settings = new ActorConcurrencySettings();
+            var guard = new ActorConcurrencyLock(owner, settings, throtllerFactory);
             return guard;
         }
 
