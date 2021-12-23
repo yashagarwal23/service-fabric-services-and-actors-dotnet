@@ -165,10 +165,12 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
 
             if (this.throttler != null)
             {
-                bool shouldThrottle = this.throttler.ShouldThrottle();
-                if (shouldThrottle)
+                lock (this.throttler)
                 {
-                    throw new ActorThrottlingException(SR.ActorCallThrottledMessage);
+                    if (this.throttler.ShouldThrottle())
+                    {
+                        throw new ActorThrottlingException(SR.ActorCallThrottledMessage);
+                    }
                 }
             }
 

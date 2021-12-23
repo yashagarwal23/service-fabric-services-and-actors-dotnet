@@ -34,27 +34,24 @@ namespace Microsoft.ServiceFabric.Actors.Throttling
         /// <inheritdoc/>
         public bool ShouldThrottle()
         {
-            lock (this.lockObject)
+            var currentTime = DateTime.UtcNow;
+            var timeElapsed = currentTime - this.windowStartTime;
+            if (timeElapsed > this.throttlingInterval)
             {
-                var currentTime = DateTime.UtcNow;
-                var timeElapsed = currentTime - this.windowStartTime;
-                if (timeElapsed > this.throttlingInterval)
-                {
-                    this.currentCallCount = 0;
-                    this.windowStartTime = currentTime;
-                }
-
-                if (this.currentCallCount >= this.limit)
-                {
-                    // the call is throttled, reject
-                    return true;
-                }
-
-                ++this.currentCallCount;
-
-                // call accepted
-                return false;
+                this.currentCallCount = 0;
+                this.windowStartTime = currentTime;
             }
+
+            if (this.currentCallCount >= this.limit)
+            {
+                // the call is throttled, reject
+                return true;
+            }
+
+            ++this.currentCallCount;
+
+            // call accepted
+            return false;
         }
     }
 }
