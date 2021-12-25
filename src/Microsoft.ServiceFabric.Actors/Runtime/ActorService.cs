@@ -13,6 +13,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
     using Microsoft.ServiceFabric.Actors.Diagnostics;
     using Microsoft.ServiceFabric.Actors.Query;
     using Microsoft.ServiceFabric.Actors.Remoting;
+    using Microsoft.ServiceFabric.Actors.Throttling;
     using Microsoft.ServiceFabric.Services.Communication.Runtime;
     using Microsoft.ServiceFabric.Services.Remoting;
     using Microsoft.ServiceFabric.Services.Runtime;
@@ -33,6 +34,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
         private readonly IActorActivator actorActivator;
         private readonly ActorManagerAdapter actorManagerAdapter;
         private readonly Func<ActorBase, IActorStateProvider, IActorStateManager> stateManagerFactory;
+        private readonly Func<IActorThrottler> throttlerFactory;
 #if !DotNetCoreClr
         private Remoting.V1.Runtime.ActorMethodDispatcherMap methodDispatcherMapV1;
 #endif
@@ -49,13 +51,15 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
         /// <param name="stateManagerFactory">The factory method to create <see cref="IActorStateManager"/></param>
         /// <param name="stateProvider">The state provider to store and access the state of the Actor objects.</param>
         /// <param name="settings">The settings used to configure the behavior of the Actor service.</param>
+        /// <param name="throttlerFactory">The factory to create throtter for actor.</param>
         public ActorService(
             StatefulServiceContext context,
             ActorTypeInformation actorTypeInfo,
             Func<ActorService, ActorId, ActorBase> actorFactory = null,
             Func<ActorBase, IActorStateProvider, IActorStateManager> stateManagerFactory = null,
             IActorStateProvider stateProvider = null,
-            ActorServiceSettings settings = null)
+            ActorServiceSettings settings = null,
+            Func<IActorThrottler> throttlerFactory = null)
             : base(
                 context,
                 stateProvider ?? ActorStateProviderHelper.CreateDefaultStateProvider(actorTypeInfo))
@@ -68,6 +72,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
             this.actorActivator = new ActorActivator(actorFactory ?? this.DefaultActorFactory);
             this.stateManagerFactory = stateManagerFactory ?? DefaultActorStateManagerFactory;
             this.actorManagerAdapter = new ActorManagerAdapter { ActorManager = new MockActorManager(this) };
+            this.throttlerFactory = throttlerFactory;
             this.replicaRole = ReplicaRole.Unknown;
             ActorTelemetry.ActorServiceInitializeEvent(
                 this.ActorManager.ActorService.Context,
@@ -137,6 +142,11 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
         internal IActorManager ActorManager
         {
             get { return this.actorManagerAdapter.ActorManager; }
+        }
+
+        internal Func<IActorThrottler> ThrottlerFactory
+        {
+            get { return this.throttlerFactory; }
         }
 
         #region IActorService Members

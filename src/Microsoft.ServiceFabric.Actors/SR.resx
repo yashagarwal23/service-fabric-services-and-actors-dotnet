@@ -367,4 +367,7 @@
   <data name="DeleteActorConflictWithLoadReminders" xml:space="preserve">
     <value>Delete request for Actor {0} cannot be processed now since the actor is loading reminders. Please try again later.</value>
   </data>
+  <data name="ActorThrottlingExceptionMessage" xml:space="preserve">
+    <value>Actor call throttled. Current call count is {0}.</value>
+  </data>
 </root>

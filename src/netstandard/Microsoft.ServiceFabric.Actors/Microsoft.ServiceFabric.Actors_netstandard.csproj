@@ -19,6 +19,7 @@
     <Compile Include="$(SourceCodeDir)Generator\*.cs" Link="$([System.String]::Copy('%(Identity)').Replace('$(SourceCodeDir)',''))" />
     <Compile Include="$(SourceCodeDir)Query\*.cs" Link="$([System.String]::Copy('%(Identity)').Replace('$(SourceCodeDir)',''))" />
     <Compile Include="$(SourceCodeDir)Runtime\**\*.cs" Link="$([System.String]::Copy('%(Identity)').Replace('$(SourceCodeDir)',''))" />
+    <Compile Include="$(SourceCodeDir)Throttling\**\*.cs" Link="$([System.String]::Copy('%(Identity)').Replace('$(SourceCodeDir)',''))" />
     <Compile Include="$(SourceCodeDir)Remoting\*.cs" Link="$([System.String]::Copy('%(Identity)').Replace('$(SourceCodeDir)',''))" />
     <Compile Include="$(SourceCodeDir)Remoting\Builder\*.cs" Link="$([System.String]::Copy('%(Identity)').Replace('$(SourceCodeDir)',''))" />
     <Compile Include="$(SourceCodeDir)Remoting\Client\*.cs" Link="$([System.String]::Copy('%(Identity)').Replace('$(SourceCodeDir)',''))" />

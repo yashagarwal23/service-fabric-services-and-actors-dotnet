@@ -45,7 +45,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
             this.diagnosticsContext = new DiagnosticsManagerActorContext();
 
             this.traceId = this.Manager.GetActorTraceId(actorId);
-            this.ConcurrencyLock = new ActorConcurrencyLock(this, this.ActorService.Settings.ActorConcurrencySettings);
+            this.ConcurrencyLock = new ActorConcurrencyLock(this, this.ActorService.Settings.ActorConcurrencySettings, actorService.ThrottlerFactory);
 
             var gcSettings = this.actorManager.ActorService.Settings.ActorGarbageCollectionSettings;
             var maxIdleTicks = gcSettings.IdleTimeoutInSeconds / gcSettings.ScanIntervalInSeconds;
