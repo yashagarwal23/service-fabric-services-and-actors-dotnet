@@ -143,23 +143,34 @@ namespace Microsoft.ServiceFabric.Actors.Tests.Runtime
                 guard.ReleaseContext(context).Wait();
             };
 
-            for (int i = 0; i < 100; i++)
+            var options = new ParallelOptions()
             {
-                actorConcurrencyLockAquireAction.Should().NotThrow();
-            }
+                MaxDegreeOfParallelism = 4,
+            };
+
+            int callsRejected = 0;
+            Parallel.For(0, 200, options, i =>
+            {
+                try
+                {
+                    actorConcurrencyLockAquireAction();
+                }
+                catch (AggregateException ex)
+                {
+                    ex.InnerException.Should().BeOfType<ActorThrottlingException>();
+                    Interlocked.Increment(ref callsRejected);
+                }
+            });
+
+            callsRejected.Should().Be(100);
 
             actorConcurrencyLockAquireAction.Should().Throw<ActorThrottlingException>();
             actorConcurrencyLockAquireAction.Should().Throw<ActorThrottlingException>();
 
             Thread.Sleep(TimeSpan.FromSeconds(2));
 
-            for (int i = 0; i < 100; i++)
-            {
-                actorConcurrencyLockAquireAction.Should().NotThrow();
-            }
-
-            actorConcurrencyLockAquireAction.Should().Throw<ActorThrottlingException>();
-            actorConcurrencyLockAquireAction.Should().Throw<ActorThrottlingException>();
+            actorConcurrencyLockAquireAction.Should().NotThrow<ActorThrottlingException>();
+            actorConcurrencyLockAquireAction.Should().NotThrow<ActorThrottlingException>();
         }
 
         private static Task<bool> ReplacementHandler(ActorBase actor)
