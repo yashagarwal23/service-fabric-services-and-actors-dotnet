@@ -507,6 +507,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
                         callContext,
                         (async innerActor => await this.HandleDirtyStateAsync(innerActor)),
                         ActorReentrancyMode.Disallowed,
+                        null,
                         cancellationToken);
 
                 ActorTrace.Source.WriteInfoWithId(

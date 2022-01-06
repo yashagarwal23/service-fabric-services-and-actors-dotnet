@@ -84,6 +84,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
                 incomingCallContext,
                 handler,
                 this.reentrancyMode,
+                this.throttler,
                 cancellationToken);
         }
 
@@ -91,6 +92,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
             string incomingCallContext,
             ActorDirtyStateHandler handler,
             ActorReentrancyMode actorReentrancyMode,
+            IActorThrottler throttler,
             CancellationToken cancellationToken)
         {
             // acquire the reentrancy lock
@@ -163,9 +165,9 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
                 this.reentrantLock.Release();
             }
 
-            if (this.throttler != null)
+            if (throttler != null)
             {
-                if (this.throttler.ShouldThrottle(out long count))
+                if (throttler.ShouldThrottle(out long count))
                 {
                     throw new ActorThrottlingException(
                         string.Format(
