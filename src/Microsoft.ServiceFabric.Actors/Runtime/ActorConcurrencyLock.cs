@@ -169,10 +169,10 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
             {
                 if (throttler.ShouldThrottle(out long count))
                 {
-                    throw new ActorThrottlingException(
+                    throw new ActorCallThrottledException(
                         string.Format(
                             CultureInfo.CurrentCulture,
-                            SR.ActorThrottlingExceptionMessage,
+                            SR.ActorCallThrottledExceptionMessage,
                             count));
                 }
             }

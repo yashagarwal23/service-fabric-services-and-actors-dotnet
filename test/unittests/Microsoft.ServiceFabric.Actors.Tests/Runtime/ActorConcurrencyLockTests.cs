@@ -158,20 +158,20 @@ namespace Microsoft.ServiceFabric.Actors.Tests.Runtime
                 }
                 catch (AggregateException ex)
                 {
-                    ex.InnerException.Should().BeOfType<ActorThrottlingException>();
+                    ex.InnerException.Should().BeOfType<ActorCallThrottledException>();
                     Interlocked.Increment(ref callsRejected);
                 }
             });
 
             callsRejected.Should().Be(100);
 
-            actorConcurrencyLockAquireAction.Should().Throw<ActorThrottlingException>();
-            actorConcurrencyLockAquireAction.Should().Throw<ActorThrottlingException>();
+            actorConcurrencyLockAquireAction.Should().Throw<ActorCallThrottledException>();
+            actorConcurrencyLockAquireAction.Should().Throw<ActorCallThrottledException>();
 
             Thread.Sleep(TimeSpan.FromSeconds(2));
 
-            actorConcurrencyLockAquireAction.Should().NotThrow<ActorThrottlingException>();
-            actorConcurrencyLockAquireAction.Should().NotThrow<ActorThrottlingException>();
+            actorConcurrencyLockAquireAction.Should().NotThrow<ActorCallThrottledException>();
+            actorConcurrencyLockAquireAction.Should().NotThrow<ActorCallThrottledException>();
         }
 
         /// <summary>
@@ -193,8 +193,8 @@ namespace Microsoft.ServiceFabric.Actors.Tests.Runtime
                 guard.ReleaseContext(context).Wait();
             };
 
-            actorConcurrencyLockAquireAction.Should().NotThrow<ActorThrottlingException>();
-            actorConcurrencyLockAquireAction.Should().Throw<ActorThrottlingException>();
+            actorConcurrencyLockAquireAction.Should().NotThrow<ActorCallThrottledException>();
+            actorConcurrencyLockAquireAction.Should().Throw<ActorCallThrottledException>();
 
             Thread.Sleep(TimeSpan.FromSeconds(1));
 

@@ -59,6 +59,15 @@ namespace Microsoft.ServiceFabric.Actors {
                 resourceCulture = value;
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Actor call throttled, current call count is {0}..
+        /// </summary>
+        internal static string ActorCallThrottledExceptionMessage {
+            get {
+                return ResourceManager.GetString("ActorCallThrottledExceptionMessage", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Actor id {0} was deleted using DeleteActorAsync while this call was in prgoress. This call should be retried..
@@ -120,15 +129,6 @@ namespace Microsoft.ServiceFabric.Actors {
         internal static string ActorStateAlreadyRemovedCurrentContext {
             get {
                 return ResourceManager.GetString("ActorStateAlreadyRemovedCurrentContext", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Actor call throttled. Current call count is {0}..
-        /// </summary>
-        internal static string ActorThrottlingExceptionMessage {
-            get {
-                return ResourceManager.GetString("ActorThrottlingExceptionMessage", resourceCulture);
             }
         }
         
