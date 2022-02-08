@@ -13,13 +13,13 @@ namespace Microsoft.ServiceFabric.Actors.Throttling
     public interface IActorThrottlingSettings
     {
         /// <summary>
-        /// Gets or sets the request limit.
+        /// Gets the call limit.
         /// </summary>
-        long Limit { get; set; }
+        long Limit { get; }
 
         /// <summary>
-        /// Gets or sets the throttling interval.
+        /// Gets the throttling interval.
         /// </summary>
-        TimeSpan Interval { get; set; }
+        TimeSpan Interval { get; }
     }
 }

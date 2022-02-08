@@ -8,14 +8,14 @@ namespace Microsoft.ServiceFabric.Actors.Throttling
     using System;
 
     /// <summary>
-    /// Settings for fixed window actor throttling
+    /// Settings for fixed window actor throttler
     /// </summary>
     public class FixedWindowActorThrottlingSettings : IActorThrottlingSettings
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FixedWindowActorThrottlingSettings"/> class.
         /// </summary>
-        /// <param name="limit">Request Limit</param>
+        /// <param name="limit">Call Limit</param>
         /// <param name="throttlingWindow">Throttling Window</param>
         public FixedWindowActorThrottlingSettings(long limit, TimeSpan throttlingWindow)
         {
@@ -34,9 +34,11 @@ namespace Microsoft.ServiceFabric.Actors.Throttling
         }
 
         /// <inheritdoc/>
-        public long Limit { get; set; }
+        public long Limit { get; private set; }
 
-        /// <inheritdoc/>
-        public TimeSpan Interval { get; set; }
+        /// <summary>
+        /// Gets the throttling window.
+        /// </summary>
+        public TimeSpan Interval { get; private set; }
     }
 }
