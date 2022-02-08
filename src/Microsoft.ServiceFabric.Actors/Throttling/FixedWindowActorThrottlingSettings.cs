@@ -19,6 +19,16 @@ namespace Microsoft.ServiceFabric.Actors.Throttling
         /// <param name="throttlingWindow">Throttling Window</param>
         public FixedWindowActorThrottlingSettings(long limit, TimeSpan throttlingWindow)
         {
+            if (limit <= 0)
+            {
+                throw new ArgumentException("Limit must be greater than 0");
+            }
+
+            if (throttlingWindow <= TimeSpan.Zero)
+            {
+                throw new ArgumentException("Throttling Window must be a positive time span duration.");
+            }
+
             this.Limit = limit;
             this.Interval = throttlingWindow;
         }
