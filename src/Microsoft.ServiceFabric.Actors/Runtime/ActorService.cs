@@ -51,7 +51,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
         /// <param name="stateManagerFactory">The factory method to create <see cref="IActorStateManager"/></param>
         /// <param name="stateProvider">The state provider to store and access the state of the Actor objects.</param>
         /// <param name="settings">The settings used to configure the behavior of the Actor service.</param>
-        /// <param name="throttlerFactory">The factory to create throtter for actor.</param>
+        /// <param name="throttlerFactory">The factory to create <see cref="IActorThrottler"/> for the actor objects.</param>
         public ActorService(
             StatefulServiceContext context,
             ActorTypeInformation actorTypeInfo,

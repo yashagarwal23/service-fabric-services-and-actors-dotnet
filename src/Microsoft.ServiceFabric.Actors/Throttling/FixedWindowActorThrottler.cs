@@ -8,7 +8,7 @@ namespace Microsoft.ServiceFabric.Actors.Throttling
     using System;
 
     /// <summary>
-    /// Fixed window throttler fo actors.
+    /// Fixed window throttler for actors.
     /// </summary>
     public class FixedWindowActorThrottler : IActorThrottler
     {

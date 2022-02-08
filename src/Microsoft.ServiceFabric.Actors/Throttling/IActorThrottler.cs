@@ -8,13 +8,13 @@ namespace Microsoft.ServiceFabric.Actors.Throttling
     using System;
 
     /// <summary>
-    /// Throttles the number of calls made to an actor.
-    /// It includes both regular actor proxy and reminder calls.
+    /// Throttles the calls made to an actor.
+    /// It includes both regular actor proxy calls and reminder calls.
     /// </summary>
     public interface IActorThrottler
     {
         /// <summary>
-        /// Gets the current request count of the actor.
+        /// Gets the current call count of the actor.
         /// </summary>
         long Count { get; }
 
@@ -22,7 +22,7 @@ namespace Microsoft.ServiceFabric.Actors.Throttling
         /// Should the actor call be throttled.
         /// </summary>
         /// <param name="count">the updated request count of the actor.</param>
-        /// <returns>True, if the request needs to be throttled. Otherwise, False</returns>
+        /// <returns>True, if the call is throttled. Otherwise, False</returns>
         bool ShouldThrottle(out long count);
     }
 }

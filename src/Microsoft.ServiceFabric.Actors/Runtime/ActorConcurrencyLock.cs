@@ -165,6 +165,8 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
                 this.reentrantLock.Release();
             }
 
+            // this is not a reentrant call, check if a throttler is configured and should
+            // the call be throttled.
             if (throttler != null)
             {
                 if (throttler.ShouldThrottle(out long count))
