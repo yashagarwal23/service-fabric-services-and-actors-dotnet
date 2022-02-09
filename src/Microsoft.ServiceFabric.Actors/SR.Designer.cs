@@ -59,7 +59,7 @@ namespace Microsoft.ServiceFabric.Actors {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Actor call throttled, current call count is {0}..
         /// </summary>
@@ -670,6 +670,24 @@ namespace Microsoft.ServiceFabric.Actors {
         internal static string InvalidCallContextReleased {
             get {
                 return ResourceManager.GetString("InvalidCallContextReleased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Throttling Window cannot be a negative time span duration..
+        /// </summary>
+        internal static string InvalidFixedWindowInterval {
+            get {
+                return ResourceManager.GetString("InvalidFixedWindowInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Limit must be greater than or equal to 0.
+        /// </summary>
+        internal static string InvalidFixedWindowLimit {
+            get {
+                return ResourceManager.GetString("InvalidFixedWindowLimit", resourceCulture);
             }
         }
         

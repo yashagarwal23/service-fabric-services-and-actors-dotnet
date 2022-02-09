@@ -370,4 +370,10 @@
   <data name="ActorCallThrottledExceptionMessage" xml:space="preserve">
     <value>Actor call throttled, current call count is {0}.</value>
   </data>
+  <data name="InvalidFixedWindowInterval" xml:space="preserve">
+    <value>Throttling Window cannot be a negative time span duration.</value>
+  </data>
+  <data name="InvalidFixedWindowLimit" xml:space="preserve">
+    <value>Limit must be greater than or equal to 0</value>
+  </data>
 </root>

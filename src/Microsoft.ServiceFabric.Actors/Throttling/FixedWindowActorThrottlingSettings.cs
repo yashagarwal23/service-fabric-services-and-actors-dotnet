@@ -6,6 +6,7 @@
 namespace Microsoft.ServiceFabric.Actors.Throttling
 {
     using System;
+    using System.Globalization;
 
     /// <summary>
     /// Settings for fixed window actor throttler
@@ -19,14 +20,20 @@ namespace Microsoft.ServiceFabric.Actors.Throttling
         /// <param name="throttlingWindow">Throttling Window</param>
         public FixedWindowActorThrottlingSettings(long limit, TimeSpan throttlingWindow)
         {
-            if (limit <= 0)
+            if (limit < 0)
             {
-                throw new ArgumentException("Limit must be greater than 0");
+                throw new ArgumentException(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        SR.InvalidFixedWindowLimit));
             }
 
-            if (throttlingWindow <= TimeSpan.Zero)
+            if (throttlingWindow < TimeSpan.Zero)
             {
-                throw new ArgumentException("Throttling Window must be a positive time span duration.");
+                throw new ArgumentException(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        SR.InvalidFixedWindowInterval));
             }
 
             this.Limit = limit;
