@@ -9,6 +9,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.ServiceFabric.Actors.Throttling;
 
     internal class ActorTimer : IActorTimer
     {
@@ -84,6 +85,15 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
             {
                 // the actor is disposed, do not reschedule the timer
                 reschedule = false;
+            }
+            catch (ActorCallThrottledException)
+            {
+                // the timer call was throttled
+                ActorTrace.Source.WriteWarningWithId(
+                    "ActorManager",
+                    this.owner.ActorService.Context.TraceId,
+                    "Timer call for actor {0} throttled",
+                    this.owner.Id);
             }
             catch
             {

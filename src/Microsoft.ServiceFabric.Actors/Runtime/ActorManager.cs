@@ -18,6 +18,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
     using Microsoft.ServiceFabric.Actors.Diagnostics;
     using Microsoft.ServiceFabric.Actors.Query;
     using Microsoft.ServiceFabric.Actors.Remoting;
+    using Microsoft.ServiceFabric.Actors.Throttling;
     using Microsoft.ServiceFabric.Services.Common;
     using Microsoft.ServiceFabric.Services.Remoting;
     using Microsoft.ServiceFabric.Services.Remoting.V2;
@@ -443,6 +444,16 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
             catch (ActorDeletedException)
             {
                 rearmTimer = false;
+            }
+            catch (ActorCallThrottledException)
+            {
+                // the reminder call was throttled
+                ActorTrace.Source.WriteWarningWithId(
+                    TraceType,
+                    this.traceId,
+                    "Reminder-{0} call for actor {1} throttled",
+                    reminder.Name,
+                    reminder.OwnerActorId);
             }
             catch (Exception e)
             {
