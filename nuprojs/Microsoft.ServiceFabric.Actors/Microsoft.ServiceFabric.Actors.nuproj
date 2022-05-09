@@ -103,6 +103,9 @@
       <File Include="$(DropFolderNetStandard)Microsoft.ServiceFabric.Actors.targets">
         <TargetPath>build\netcoreapp2.0</TargetPath>
       </File>
+      <File Include="$(DropFolderNetStandard)FabActUtilStartupHook.dll">
+        <TargetPath>build\netcoreapp2.0</TargetPath>
+      </File>
       <File Include="$(DropFolderNetStandard)Microsoft.ServiceFabric.Actors.dll">
         <TargetPath>build\netcoreapp2.0</TargetPath>
       </File>
