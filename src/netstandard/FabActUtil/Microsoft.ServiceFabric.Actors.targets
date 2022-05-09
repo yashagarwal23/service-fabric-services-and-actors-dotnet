@@ -11,6 +11,28 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <RuntimeVersion Include="$(_TargetFrameworkVersionWithoutV).0" />
     <FabActUtilRuntimeConfig Include="$(FabActUtilWorkingDir)\FabActUtil.runtimeconfig.json" />
   </ItemGroup>
+
+  <UsingTask
+  TaskName="SetEnvironmentVariableTask"
+  TaskFactory="CodeTaskFactory"
+  AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+
+    <ParameterGroup>
+      <Name ParameterType="System.String" Required="true" />
+      <Value ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+
+    <Task>
+      <Using Namespace="System" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+          Environment.SetEnvironmentVariable(Name, Value);
+        ]]>
+      </Code>
+    </Task>
+
+  </UsingTask>
+
   <Target Name="_CopyAssembliesToFabActUtilWorkingDir">
     <ItemGroup>
       <ActorServiceAssemblies Include="$(TargetDir)\*" />
@@ -21,8 +43,9 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <Copy SourceFiles="@(ActorServiceAssemblies)" DestinationFolder="$(FabActUtilWorkingDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(FabActUtilAssemblies)" DestinationFolder="$(FabActUtilWorkingDir)" SkipUnchangedFiles="true" />
     <Exec Command="echo { %22runtimeOptions%22: { %22tfm%22: %22$(TargetFramework)%22, %22framework%22: { %22name%22:  %22Microsoft.NETCore.App%22, %22version%22:  %22@(RuntimeVersion)%22 }}} > @(FabActUtilRuntimeConfig) " Condition=" '$(RuntimeIdentifier)' != 'win7-x64' "/>
-  </Target>    
+  </Target>
   <Target Name="_UpdateServiceFabricServiceManifest" AfterTargets="Build" DependsOnTargets="_CopyAssembliesToFabActUtilWorkingDir" Condition=" '$(UpdateServiceFabricManifestEnabled)' == 'true' ">
+    <SetEnvironmentVariableTask Name="DOTNET_STARTUP_HOOKS" Value="$(MSBuildThisFileDirectory)\FabActUtilStartupHook.dll"/>
     <Exec Command="dotnet &quot;$(FabActUtilWorkingDir)\FabActUtil.dll&quot; /spp:&quot;$(ServicePackagePath)&quot; /t:manifest /sp:&quot;$(ServicePackagePrefix)&quot; /in:&quot;$(OutDir)\$(AssemblyName).dll&quot; /arp:&quot;$(TargetDir)\&quot; /smep:$(ServiceManifestEntryPointType) $(FabActUtilAdditionalArguments)" WorkingDirectory="$(MSBuildProjectDirectory)" />
   </Target>
   <Target Name="_UpdateServiceFabricApplicationManifest" DependsOnTargets="_CopyAssembliesToFabActUtilWorkingDir" Condition=" '$(UpdateServiceFabricManifestEnabled)' == 'true' ">
@@ -33,6 +56,7 @@ Copyright (C) Microsoft Corporation. All rights reserved.
       <Local1NodeStartupServiceParamFileArg Condition=" '$(Local1NodeStartupServiceParamFile)' != '' ">/local1nodestartupserviceparamfile:&quot;$(Local1NodeStartupServiceParamFile)&quot;</Local1NodeStartupServiceParamFileArg>
       <StartupServicesFilePathArg Condition=" '$(StartupServicesFilePath)' != '' ">/ssfp:&quot;$(StartupServicesFilePath)&quot;</StartupServicesFilePathArg>
     </PropertyGroup>
+    <SetEnvironmentVariableTask Name="DOTNET_STARTUP_HOOKS" Value="$(MSBuildThisFileDirectory)\FabActUtilStartupHook.dll"/>
     <Exec Command="dotnet &quot;$(FabActUtilWorkingDir)\FabActUtil.dll&quot; /app:&quot;$(ApplicationPackagePath)&quot; /spp:&quot;$(ServicePackagePath)&quot; /t:manifest /ap:&quot;$(ApplicationPrefix)&quot; /sp:&quot;$(ServicePackagePrefix)&quot; /in:&quot;$(OutDir)\$(AssemblyName).dll&quot; /arp:&quot;$(TargetDir)\&quot; /smep:$(ServiceManifestEntryPointType) $(StartupServicesFilePathArg) $(Local5NodeAppParamFileArg) $(Local1NodeAppParamFileArg) $(Local5NodeStartupServiceParamFileArg) $(Local1NodeStartupServiceParamFileArg) $(FabActUtilAdditionalArguments)" WorkingDirectory="$(MSBuildProjectDirectory)" />
   </Target>
 </Project>
