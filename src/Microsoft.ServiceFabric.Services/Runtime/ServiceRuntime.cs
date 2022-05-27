@@ -64,8 +64,8 @@ namespace Microsoft.ServiceFabric.Services.Runtime
             TimeSpan timeout = default(TimeSpan),
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            serviceFactory.ThrowIfNull("serviceFactory");
-            serviceTypeName.ThrowIfNullOrWhiteSpace("serviceTypeName");
+            Requires.ThrowIfNull(serviceFactory, "serviceFactory");
+            Requires.ThrowIfNullOrWhiteSpace(serviceTypeName, "serviceTypeName");
 
             var runtimeContext = await RuntimeContext.GetOrCreateAsync(timeout, cancellationToken);
             await runtimeContext.Runtime.RegisterStatefulServiceFactoryAsync(
