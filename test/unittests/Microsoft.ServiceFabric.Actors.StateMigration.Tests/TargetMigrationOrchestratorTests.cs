@@ -105,6 +105,8 @@ namespace Microsoft.ServiceFabric.Actors.StateMigration.Tests
                 .CallBase();
             mockFactory.Setup(o => o.StartDowntimeAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .CallBase();
+            mockFactory.Setup(o => o.IsAutoStartMigration())
+                .CallBase();
             mockFactory.Setup(o => o.GetMigrationPhaseWorkload(It.IsAny<MigrationPhase>(), It.IsAny<int>()))
                 .Returns<MigrationPhase, int>((phase, __) =>
                 {
