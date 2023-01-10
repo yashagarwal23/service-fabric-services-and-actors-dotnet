@@ -15,7 +15,7 @@ namespace Microsoft.ServiceFabric.Actors.Query
     /// </summary>
     /// <typeparam name="T"><see cref="System.Type"/> of the items this reminder query result contains.</typeparam>
     [DataContract(Name = "ReminderPagedResult", Namespace = Constants.Namespace)]
-    [KnownType(typeof(List<KeyValuePair<ActorId, List<ActorReminderState>>>))]
+    [KnownType(typeof(List<KeyValuePair<ActorId, List<IActorReminderState>>>))]
     public sealed class ReminderPagedResult<T>
     {
         /// <summary>

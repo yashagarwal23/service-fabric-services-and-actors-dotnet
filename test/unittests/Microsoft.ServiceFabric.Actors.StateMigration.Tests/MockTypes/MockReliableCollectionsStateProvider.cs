@@ -129,7 +129,7 @@ namespace Microsoft.ServiceFabric.Actors.StateMigration.Tests.MockTypes
             return this.reminderDict;
         }
 
-        public Task<ReminderPagedResult<KeyValuePair<ActorId, List<ActorReminderState>>>> GetRemindersAsync(int numItemsToReturn, ActorId actorId, ContinuationToken continuationToken, CancellationToken cancellationToken)
+        public Task<ReminderPagedResult<KeyValuePair<ActorId, List<IActorReminderState>>>> GetRemindersAsync(int numItemsToReturn, ActorId actorId, ContinuationToken continuationToken, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

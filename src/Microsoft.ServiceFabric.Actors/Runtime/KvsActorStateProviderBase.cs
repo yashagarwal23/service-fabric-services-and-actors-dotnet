@@ -443,14 +443,14 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
         }
 
         /// <inheritdoc/>
-        async Task<ReminderPagedResult<KeyValuePair<ActorId, List<ActorReminderState>>>> IActorStateProvider.GetRemindersAsync(int numItemsToReturn, ActorId actorId, ContinuationToken continuationToken, CancellationToken cancellationToken)
+        async Task<ReminderPagedResult<KeyValuePair<ActorId, List<IActorReminderState>>>> IActorStateProvider.GetRemindersAsync(int numItemsToReturn, ActorId actorId, ContinuationToken continuationToken, CancellationToken cancellationToken)
         {
             return await this.actorStateProviderHelper.ExecuteWithRetriesAsync(
                async () =>
                {
                    return await Task.Run(() =>
                    {
-                       var result = new ConcurrentDictionary<ActorId, List<ActorReminderState>>();
+                       var result = new ConcurrentDictionary<ActorId, List<IActorReminderState>>();
                        var reminderkey = actorId == null
                            ? ReminderStorageKeyPrefix
                            : $"{ReminderStorageKeyPrefix}_{actorId.GetStorageKey()}";
@@ -522,12 +522,12 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
                                    reminderCompletedData = this.DeserializeReminderCompletedData(completedValue);
                                }
 
-                               result.GetOrAdd(reminderData.ActorId, a => new List<ActorReminderState>())
+                               result.GetOrAdd(reminderData.ActorId, a => new List<IActorReminderState>())
                                    .Add(new ActorReminderState(reminderData, this.logicalTimeManager.CurrentLogicalTime, reminderCompletedData));
                            }
                        }
 
-                       return new ReminderPagedResult<KeyValuePair<ActorId, List<ActorReminderState>>>()
+                       return new ReminderPagedResult<KeyValuePair<ActorId, List<IActorReminderState>>>()
                        {
                            Items = result.AsEnumerable(),
                            ContinuationToken = hasMore && nextKey.StartsWith(reminderkey) ? new ContinuationToken(nextContinuationMarker) : null,

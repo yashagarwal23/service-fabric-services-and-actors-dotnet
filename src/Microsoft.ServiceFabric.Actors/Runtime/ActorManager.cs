@@ -697,13 +697,13 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
             };
         }
 
-        public async Task<ReminderPagedResult<KeyValuePair<ActorId, List<ActorReminderState>>>> GetRemindersFromStateProviderAsync(
+        public async Task<ReminderPagedResult<KeyValuePair<ActorId, List<IActorReminderState>>>> GetRemindersFromStateProviderAsync(
             ActorId actorId,
             ContinuationToken continuationToken,
             CancellationToken cancellationToken)
         {
             return await this.StateProvider.GetRemindersAsync(
-                ReminderPagedResult<KeyValuePair<ActorId, List<ActorReminderState>>>.GetDefaultPageSize(),
+                ReminderPagedResult<KeyValuePair<ActorId, List<IActorReminderState>>>.GetDefaultPageSize(),
                 actorId,
                 continuationToken,
                 cancellationToken);

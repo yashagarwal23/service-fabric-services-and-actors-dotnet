@@ -264,7 +264,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
         }
 
         /// <inheritdoc/>
-        Task<ReminderPagedResult<KeyValuePair<ActorId, List<ActorReminderState>>>> IActorService.GetRemindersAsync(
+        Task<ReminderPagedResult<KeyValuePair<ActorId, List<IActorReminderState>>>> IActorService.GetRemindersAsync(
            ActorId actorId,
            ContinuationToken continuationToken,
            CancellationToken cancellationToken)

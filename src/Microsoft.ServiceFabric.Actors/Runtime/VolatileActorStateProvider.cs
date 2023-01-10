@@ -455,7 +455,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
         }
 
         /// <inheritdoc/>
-        async Task<ReminderPagedResult<KeyValuePair<ActorId, List<ActorReminderState>>>> IActorStateProvider.GetRemindersAsync(
+        async Task<ReminderPagedResult<KeyValuePair<ActorId, List<IActorReminderState>>>> IActorStateProvider.GetRemindersAsync(
             int numItemsToReturn,
             ActorId actorId,
             ContinuationToken continuationToken,
@@ -466,7 +466,7 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
                 {
                     return await Task.Run(() =>
                     {
-                        var result = new ConcurrentDictionary<ActorId, List<ActorReminderState>>();
+                        var result = new ConcurrentDictionary<ActorId, List<IActorReminderState>>();
                         Func<string, bool> filterFunc = key => true;
                         if (actorId != null)
                         {
@@ -530,11 +530,11 @@ namespace Microsoft.ServiceFabric.Actors.Runtime
                             }
 
                             nextMarker = key;
-                            result.GetOrAdd(reminderData.ActorId, new List<ActorReminderState>())
+                            result.GetOrAdd(reminderData.ActorId, new List<IActorReminderState>())
                                 .Add(new ActorReminderState(reminderData, this.logicalTimeManager.CurrentLogicalTime, reminderCompletedData));
                         }
 
-                        return new ReminderPagedResult<KeyValuePair<ActorId, List<ActorReminderState>>>()
+                        return new ReminderPagedResult<KeyValuePair<ActorId, List<IActorReminderState>>>()
                         {
                             Items = result.AsEnumerable(),
                             ContinuationToken = hasMore && nextMarker != string.Empty ? new ContinuationToken(nextMarker) : null,
